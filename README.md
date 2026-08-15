@@ -90,8 +90,8 @@ $ python3 scripts/update.py -D="./dictionaries/dictionary-26.2.json" -S="path/to
 ```
 
 - the `-D` flag will set the path of the dictionary (needed to convert full name scoreboards to their truncated form).
-- the `-S` flag will set the path of the stats folder. It's usually found at `.minecraft/saves/<world>/stats`, or
-`<server>/world/stats`. It should contain plenty of JSON files.
+- the `-S` flag will set the path of the stats folder. It's usually found at `.minecraft/saves/<world>/players/stats`, or
+`<server>/world/players/stats`. It should contain plenty of JSON files.
 
 There are 4 __optional__ tags. If you have a custom scoreboard made for dig's, you can set their name and they will get updated:
 - `--dig="<name>"` sets the name of the general dig scoreboard (counts all blocks mined)
