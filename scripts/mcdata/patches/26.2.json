@@ -1,0 +1,40 @@
+{
+    "blocks": [
+        {"name": "cinnabar", "displayName": "Cinnabar"},
+        {"name": "cinnabar_slab", "displayName": "Cinnabar Slab"},
+        {"name": "cinnabar_stairs", "displayName": "Cinnabar Stairs"},
+        {"name": "cinnabar_wall", "displayName": "Cinnabar Wall"},
+        {"name": "polished_cinnabar", "displayName": "Polished Cinnabar"},
+        {"name": "polished_cinnabar_slab", "displayName": "Polished Cinnabar Slab"},
+        {"name": "polished_cinnabar_stairs", "displayName": "Polished Cinnabar Stairs"},
+        {"name": "polished_cinnabar_wall", "displayName": "Polished Cinnabar Wall"},
+        {"name": "cinnabar_bricks", "displayName": "Cinnabar Bricks"},
+        {"name": "cinnabar_brick_slab", "displayName": "Cinnabar Brick Slab"},
+        {"name": "cinnabar_brick_stairs", "displayName": "Cinnabar Brick Stairs"},
+        {"name": "cinnabar_brick_wall", "displayName": "Cinnabar Brick Wall"},
+        {"name": "chiseled_cinnabar", "displayName": "Chiseled Cinnabar"},
+        {"name": "potent_sulfur", "displayName": "Potent Sulfur"},
+        {"name": "sulfur", "displayName": "Sulfur"},
+        {"name": "sulfur_slab", "displayName": "Sulfur Slab"},
+        {"name": "sulfur_stairs", "displayName": "Sulfur Stairs"},
+        {"name": "sulfur_wall", "displayName": "Sulfur Wall"},
+        {"name": "polished_sulfur", "displayName": "Polished Sulfur"},
+        {"name": "polished_sulfur_slab", "displayName": "Polished Sulfur Slab"},
+        {"name": "polished_sulfur_stairs", "displayName": "Polished Sulfur Stairs"},
+        {"name": "polished_sulfur_wall", "displayName": "Polished Sulfur Wall"},
+        {"name": "sulfur_bricks", "displayName": "Sulfur Bricks"},
+        {"name": "sulfur_brick_slab", "displayName": "Sulfur Brick Slab"},
+        {"name": "sulfur_brick_stairs", "displayName": "Sulfur Brick Stairs"},
+        {"name": "sulfur_brick_wall", "displayName": "Sulfur Brick Wall"},
+        {"name": "chiseled_sulfur", "displayName": "Chiseled Sulfur"},
+        {"name": "sulfur_spike", "displayName": "Sulfur Spike"}
+    ],
+    "items": [
+        {"name": "bucket_of_sulfur_cube", "displayName": "Bucket of Sulfur Cube"},
+        {"name": "music_disc_bounce", "displayName": "Music Disc"},
+        {"name": "sulfur_cube_spawn_egg", "displayName": "Sulfur Cube Spawn Egg"}
+    ],
+    "entities": [
+        {"name": "sulfur_cube", "displayName": "Sulfur Cube"}
+    ]
+}

@@ -14,7 +14,7 @@ If you don't find what you need, read the following section; you can skip it oth
 
 First of all, clone the repository: 
 ```shell script
-$ git clone https://github.com/samipourquoi/every-scoreboard.git
+$ git clone https://github.com/Chezloc/every-scoreboard.git
 $ cd every-scoreboard
 ```
 
@@ -80,9 +80,6 @@ long, and replace their end with a series of number.
 If you wish to create your own tool solving that issue, you can find
 a JSON of key-value's (fullname to truncated name) in the generated `dictionaries/dictionary-<version>.json` file.
 
-I have programmed a linking bot between a Discord chat and a Minecraft server, with other utilities, that handles that
-issue. You can find the code over [here](https://github.com/samipourquoi/endbot) if you wish to set it up.
-
 # 'Recover' your old stats
 
 What if you have already started your world without all of these fancy scoreboards? No problem!
@@ -113,6 +110,6 @@ and enter these commands:
 ```
 
 # Credits
-Contact me on Discord `samipourquoi#9267` or via the EndTech discord: https://discord.gg/t7UwaDc.
+Contact me on Discord `chezloc`.
 
 Feel free to contact me if you need any help 😀

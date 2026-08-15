@@ -1,15 +1,66 @@
 description = """
 Converts statistics to objective values.
-by samipourquoi
+by samipourquoi & Chezloc
 """
 
-pack = """{
+pack_legacy = """{
     "pack": {
         "description": "Every scoreboard, for Minecraft %s!",
-        "pack_format": 5
+        "pack_format": %d
     }
 }
 """
+
+pack_modern = """{
+    "pack": {
+        "description": "Every scoreboard, for Minecraft %s!",
+        "min_format": [%d, %d],
+        "max_format": [%d, %d]
+    }
+}
+"""
+
+# Data pack format numbers (major, minor), covering every release from 1.16
+# through 26.2. Keep in sync with create.py - see that file for sourcing notes.
+pack_formats = {
+	"1.16": (5, 0),
+	"1.16.1": (5, 0),
+	"1.16.2": (6, 0),
+	"1.16.3": (6, 0),
+	"1.16.4": (6, 0),
+	"1.16.5": (6, 0),
+	"1.17": (7, 0),
+	"1.17.1": (7, 0),
+	"1.18": (8, 0),
+	"1.18.1": (8, 0),
+	"1.18.2": (9, 0),
+	"1.19": (10, 0),
+	"1.19.1": (10, 0),
+	"1.19.2": (10, 0),
+	"1.19.3": (10, 0),
+	"1.19.4": (12, 0),
+	"1.20": (15, 0),
+	"1.20.1": (15, 0),
+	"1.20.2": (18, 0),
+	"1.20.3": (26, 0),
+	"1.20.4": (26, 0),
+	"1.20.5": (41, 0),
+	"1.20.6": (41, 0),
+	"1.21": (48, 0),
+	"1.21.1": (48, 0),
+	"1.21.2": (57, 0),
+	"1.21.3": (57, 0),
+	"1.21.4": (61, 0),
+	"1.21.5": (71, 0),
+	"1.21.6": (80, 0),
+	"1.21.7": (81, 0),
+	"1.21.8": (81, 0),
+	"1.21.9": (88, 0),
+	"1.21.10": (88, 0),
+	"1.21.11": (94, 1),
+	"26.1": (101, 1),
+	"26.2": (107, 1),
+}
 
 tag_text = """{
 	"values": [
@@ -45,8 +96,14 @@ def main():
 	os.makedirs("./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/tags/functions",
 	            exist_ok=True)
 	# Creates the pack.mcmeta file
+	if minecraft_version not in pack_formats:
+		raise ValueError("No pack_format known for version '%s'. Add it to pack_formats." % minecraft_version)
+	pack_major, pack_minor = pack_formats[minecraft_version]
 	pack_mcmeta = open("./datapacks/every-scoreboard-" + minecraft_version + "/pack.mcmeta", "w+")
-	pack_mcmeta.write(pack % minecraft_version)
+	if pack_major >= 82:  # 25w31a+ uses min_format/max_format instead of a single pack_format
+		pack_mcmeta.write(pack_modern % (minecraft_version, pack_major, pack_minor, 999, 0))
+	else:
+		pack_mcmeta.write(pack_legacy % (minecraft_version, pack_major))
 	pack_mcmeta.close()
 
 	# Reads dictionary

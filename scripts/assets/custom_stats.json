@@ -268,7 +268,7 @@
         "displayName": "Targets Hit"
     },
     "67": {
-        "name": "play_one_minute",
+        "name": "play_time",
         "displayName": "Time Played"
     },
     "68": {
@@ -287,12 +287,24 @@
         "name": "use_cauldron",
         "displayName": "Water Taken from Cauldron"
     },
-	"72": {
+    "72": {
         "name": "interact_with_anvil",
         "displayName": "Interactions with Anvils"
     },
-	"73": {
+    "73": {
         "name": "interact_with_grindstone",
         "displayName": "Interactions with Grindstone"
+    },
+    "74": {
+        "name": "total_world_time",
+        "displayName": "Time with World Open"
+    },
+    "75": {
+        "name": "happy_ghast_one_cm",
+        "displayName": "Distance by Happy Ghast"
+    },
+    "76": {
+        "name": "nautilus_one_cm",
+        "displayName": "Distance by Nautilus"
     }
 }
