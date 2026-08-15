@@ -152,10 +152,14 @@ def main():
 		username = get_username(uuid[:36])
 		commands += str.join("\n",mined + used + crafted + broken + picked_up + dropped + killed + killed_by + custom).replace("%s", username) + "\n"
 
-		# Prints
-		sys.stdout.write(
-			"\r" + "Updating " + username + "'s scores...\n\r" + str(done) + "/" + str(len(files)) + " done")
+		# Prints a progress bar that updates in place
+		bar_width = 30
+		filled = int(bar_width * done / len(files))
+		bar = "#" * filled + "-" * (bar_width - filled)
+		sys.stdout.write("\r[" + bar + "] " + str(done) + "/" + str(len(files)) + " - " + username + " " * 20)
 		sys.stdout.flush()
+
+	sys.stdout.write("\n")
 
 	# It's messy code but it works ig
 	i = 0
