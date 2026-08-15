@@ -25,7 +25,7 @@ $ pip install -r requirements.txt
 ```
 For Chronos:
 ```shell script
-$ /opt/python/bin/python3 pip install -r requirements.txt
+$ /opt/python/bin/python3 -m pip install -r requirements.txt
 ```
 
 To 'compile' the datapacks, run the following:
