@@ -30,10 +30,19 @@ To 'compile' the datapacks, run the following:
 $ python3 scripts/create.py --mcversion="26.2" -c
 ```
 
-The `-c` flag will add the [custom objectives](https://minecraft.gamepedia.com/Statistics#List_of_custom_statistic_names)
+The `-c` flag will add the [custom objectives](https://minecraft.wiki/w/Statistics#List_of_custom_statistic_names)
 to the datapack. Be careful however! It is made for the latest version(s) of the game only.
 You will probably need to modify the resulting `mcfunction` files at the end if you
 do it for an older version of Minecraft.
+
+For versions 1.20 and up, block/item/entity data is fetched automatically at runtime from
+[PrismarineJS/minecraft-data](https://github.com/PrismarineJS/minecraft-data) and cached locally
+under `scripts/mcdata/<version>/`, so you don't need to update anything by hand when a new
+Minecraft version comes out — just run `create.py` with the new `--mcversion`. If PrismarineJS
+doesn't have the exact version yet, the closest older version it does have is used instead,
+with any gap filled in from a hand-written patch in `scripts/mcdata/patches/<version>.json` (only
+needed for very recent releases PrismarineJS hasn't caught up to). Versions below 1.20 still use
+the `minecraft_data` pip package.
 
 The resulting files will end up at `datapacks/every-scoreboard-<version>` and `dictionaries/dictionary-<version>.json`.
 We will come back to the second file later on.
@@ -68,7 +77,7 @@ The scoreboards are name accordingly:
 - `d-<item>` Dropped items
 - `k-<mob>` Killed mobs
 - `kb-<mob>` Killed by mob
-- `z-<stats>` Custom (find all the possible `stats` over [here](https://minecraft.gamepedia.com/Statistics#List_of_custom_statistic_names))
+- `z-<stats>` Custom (find all the possible `stats` over [here](https://minecraft.wiki/w/Statistics#List_of_custom_statistic_names))
 
 ### ⚠️ Important note ⚠️
 
@@ -90,10 +99,14 @@ $ python3 scripts/update.py -D="./dictionaries/dictionary-26.2.json" -S="path/to
 ```
 
 - the `-D` flag will set the path of the dictionary (needed to convert full name scoreboards to their truncated form).
-- the `-S` flag will set the path of the stats folder. It's usually found at `.minecraft/saves/<world>/players/stats`, or
+- the `-S` flag will set the path of the stats folder. It's usually found at `.minecraft/saves/<world>/stats`, or
 `<server>/world/players/stats`. It should contain plenty of JSON files.
 
-There are 4 __optional__ tags. If you have a custom scoreboard made for dig's, you can set their name and they will get updated:
+There are 5 __optional__ flags:
+- `--usercache="<path>"` (or `-u`) points at your server's `usercache.json` (found at the root of
+  the server, alongside the `world` folder) to resolve player UUIDs to usernames locally, without
+  calling Mojang's API. Recommended: it's instant and works for every player already in the cache.
+  Any UUID not found there falls back to a live lookup against Mojang's session server.
 - `--dig="<name>"` sets the name of the general dig scoreboard (counts all blocks mined)
 - `--picks="<name>"` sets the name of all type pick uses (netherite, diamond, iron...)
 - `--shovels="<name>"` sets the name of all type shovel uses 
