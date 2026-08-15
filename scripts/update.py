@@ -84,6 +84,9 @@ parser.add_argument("-p", "--picks", required=False, help="(optional) set the na
 parser.add_argument("-s", "--shovels", required=False,
                     help="(optional) set the name of the total shovel uses objective")
 parser.add_argument("-a", "--axes", required=False, help="(optional) set the name of the axe uses objective")
+parser.add_argument("-u", "--usercache", required=False,
+                    help="(optional) path to the server's usercache.json, used to resolve UUIDs to usernames "
+                         "locally instead of querying Mojang's API")
 args = parser.parse_args()
 
 
@@ -110,6 +113,14 @@ def main():
 	dictionary_file = open(args.dictionary, "r")
 	dictionary = json.load(dictionary_file)
 	dictionary_file.close()
+
+	# Reads usercache.json for local UUID->username lookups, if provided
+	usercache = {}
+	if args.usercache:
+		usercache_file = open(args.usercache, "r")
+		for entry in json.load(usercache_file):
+			usercache[entry["uuid"].replace("-", "")] = entry["name"]
+		usercache_file.close()
 
 	location = args.statslocation
 	files = os.listdir(location)
@@ -149,7 +160,7 @@ def main():
 		if len(mined) < 10:
 			continue
 
-		username = get_username(uuid[:36])
+		username = get_username(uuid[:36], usercache)
 		commands += str.join("\n",mined + used + crafted + broken + picked_up + dropped + killed + killed_by + custom).replace("%s", username) + "\n"
 
 		# Prints a progress bar that updates in place
@@ -226,18 +237,39 @@ def stats_to_commands(stats, prefix, dictionary):
 	return commands
 
 
-def get_username(uuid):
+def get_username(uuid, usercache=None, retries_left=5):
 	# Removes the '-'
 	uuid = uuid.replace("-", "")
-	# Requests to mojang api
-	body = json.loads(requests.get("https://api.mojang.com/user/profiles/" + uuid + "/names").text)
-	# Gets the current username
-	try:
-		username = body[-1]["name"]
-		return username
-	except:
-		time.sleep(10)
-		return get_username(uuid)
+
+	# Check the local usercache first, if one was provided - avoids hitting
+	# Mojang's API (and its rate limit) entirely for players already cached
+	if usercache and uuid in usercache:
+		return usercache[uuid]
+
+	# Requests the player's current profile from Mojang's session server.
+	# (api.mojang.com/user/profiles/<uuid>/names was deprecated and removed
+	# by Mojang in September 2022 - this replaces it.)
+	response = requests.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid)
+
+	if response.status_code == 200:
+		try:
+			return response.json()["name"]
+		except (KeyError, ValueError):
+			pass  # unexpected shape - fall through to retry/give-up handling below
+
+	if response.status_code == 404:
+		# no such profile (e.g. an offline-mode/fake UUID) - not going to
+		# start working on retry, so don't loop forever
+		return uuid
+
+	if retries_left <= 0:
+		# sessionserver is rate-limited to one request/minute per profile;
+		# after several attempts, assume something's genuinely wrong rather
+		# than retrying indefinitely
+		return uuid
+
+	time.sleep(10)
+	return get_username(uuid, usercache, retries_left - 1)
 
 
 if __name__ == "__main__":
