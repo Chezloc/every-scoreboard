@@ -30,7 +30,7 @@
         {"name": "sulfur_spike", "displayName": "Sulfur Spike"}
     ],
     "items": [
-        {"name": "bucket_of_sulfur_cube", "displayName": "Bucket of Sulfur Cube"},
+        {"name": "sulfur_cube_bucket", "displayName": "Bucket of Sulfur Cube"},
         {"name": "music_disc_bounce", "displayName": "Music Disc"},
         {"name": "sulfur_cube_spawn_egg", "displayName": "Sulfur Cube Spawn Egg"}
     ],
