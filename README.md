@@ -81,6 +81,11 @@ The scoreboards are name accordingly:
 
 ### ⚠️ Important note ⚠️
 
+You may need to set your max_command_sequence_length to a higher value like 500000
+```
+gamerule max_command_sequence_length 500000
+```
+
 Scoreboards name can't be longer than 16 characters! To solve that issue, the program truncates the names which are too
 long, and replace their end with a series of number. 
 
