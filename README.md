@@ -22,15 +22,28 @@ Install the dependencies with this command;
 make sure you have [pip](https://pip.pypa.io/en/stable/installing/) installed. 
 ```shell script
 $ pip install -r requirements.txt
+
+For chronos:
+
+$ /opt/python/bin/python3 pip install -r requirements.txt
 ```
 
 To 'compile' the datapacks, run the following:
 ```shell script
-# For 1.16.2
-$ python3 scripts/create.py --mcversion="1.16.2" -c
+# For 26.2
+$ python3 scripts/create.py --mcversion="26.2" -c
 
-# For 1.15.2
-$ python3 scripts/create.py --mcversion="1.15.2"
+For chronos:
+
+$ /opt/python/bin/python3 scripts/create.py --mcversion="26.2" -c
+
+# For 1.16.2
+$ python3 scripts/create.py --mcversion="1.16.2"
+
+For chronos:
+
+$ /opt/python/bin/python3 scripts/create.py --mcversion="1.16.2" -c
+
 ```
 The `-c` flag will add the [custom objectives](https://minecraft.gamepedia.com/Statistics#List_of_custom_statistic_names)
 to the datapack. Be careful however! It is made for the latest version(s) of the game only.
@@ -88,7 +101,11 @@ objectives to their actual value.
 
 To do so, run the `update.py` script like so:
 ```shell script
-$ python3 scripts/update.py -D="./dictionaries/dictionary-1.16.2.json" -S="path/to/stats"
+$ python3 scripts/update.py -D="./dictionaries/dictionary-26.2.json" -S="path/to/stats"
+
+For chronos:
+
+$ /opt/python/bin/python3 scripts/create.py scripts/update.py -D="./dictionaries/dictionary-26.2.json" -S="path/to/stats"
 ```
 
 - the `-D` flag will set the path of the dictionary (needed to convert full name scoreboards to their truncated form).
