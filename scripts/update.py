@@ -68,6 +68,15 @@ tag_text = """{
 	]
 }"""
 
+# Minecraft 1.21 (data pack format 48) renamed data/<namespace>/functions/ to
+# data/<namespace>/function/ (singular) and data/<namespace>/tags/functions/
+# to data/<namespace>/tags/function/. Keep in sync with create.py.
+FUNCTION_FOLDER_RENAME_FORMAT = 48
+
+
+def function_folder_name(pack_major):
+	return "function" if pack_major >= FUNCTION_FOLDER_RENAME_FORMAT else "functions"
+
 import argparse
 import requests
 import json
@@ -93,15 +102,17 @@ args = parser.parse_args()
 def main():
 	minecraft_version = args.dictionary.split("/")[-1][11:-5]
 
-	# Create required files/folders
-	os.makedirs("./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/functions/",
-	            exist_ok=True)
-	os.makedirs("./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/tags/functions",
-	            exist_ok=True)
-	# Creates the pack.mcmeta file
 	if minecraft_version not in pack_formats:
 		raise ValueError("No pack_format known for version '%s'. Add it to pack_formats." % minecraft_version)
 	pack_major, pack_minor = pack_formats[minecraft_version]
+	function_dir = function_folder_name(pack_major)
+
+	# Create required files/folders
+	os.makedirs("./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/" + function_dir + "/",
+	            exist_ok=True)
+	os.makedirs("./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/tags/" + function_dir,
+	            exist_ok=True)
+	# Creates the pack.mcmeta file
 	pack_mcmeta = open("./datapacks/every-scoreboard-" + minecraft_version + "/pack.mcmeta", "w+")
 	if pack_major >= 82:  # 25w31a+ uses min_format/max_format instead of a single pack_format
 		pack_mcmeta.write(pack_modern % (minecraft_version, pack_major, pack_minor, 999, 0))
@@ -180,7 +191,7 @@ def main():
 	max_length = 60000
 	while has_ran_once or len(commands) > 0:
 		update_mcfunction = open(
-			"./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/functions/update" + str(i) + ".mcfunction",
+			"./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/" + function_dir + "/update" + str(i) + ".mcfunction",
 			"w+")
 		update_mcfunction.write(str.join("\n", commands[:max_length]))
 		update_mcfunction.close()
@@ -193,7 +204,7 @@ def main():
 
 	# Creates the tag to run all of these function files
 	tag = open(
-			"./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/tags/functions/update.json",
+			"./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/tags/" + function_dir + "/update.json",
 			"w+")
 	tag.write(tag_text % str.join(",\n\t\t", function_names))
 	tag.close()

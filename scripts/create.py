@@ -70,6 +70,15 @@ pack_formats = {
 
 custom_version = "1.16+"
 
+# Minecraft 1.21 (data pack format 48) renamed data/<namespace>/functions/ to
+# data/<namespace>/function/ (singular), along with several other folders.
+# This only affects the folder name, not the .mcfunction file contents/names.
+FUNCTION_FOLDER_RENAME_FORMAT = 48
+
+
+def function_folder_name(pack_major):
+	return "function" if pack_major >= FUNCTION_FOLDER_RENAME_FORMAT else "functions"
+
 import argparse
 import json
 import os
@@ -103,15 +112,18 @@ def main():
 	killed_by = make(entities, "kb", "minecraft.killed_by", "Killed by %s")
 	custom = make(custom_stats, "z", "minecraft.custom", "%s")
 
-	# Creates the required folders
-	os.makedirs("./dictionaries/", exist_ok=True)
-	os.makedirs("./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/functions/",
-	            exist_ok=True)
-
-	# Creates the pack.mcmeta file
+	# Data pack format and folder-naming convention for this version
 	if minecraft_version not in pack_formats:
 		raise ValueError("No pack_format known for version '%s'. Add it to pack_formats." % minecraft_version)
 	pack_major, pack_minor = pack_formats[minecraft_version]
+	function_dir = function_folder_name(pack_major)
+
+	# Creates the required folders
+	os.makedirs("./dictionaries/", exist_ok=True)
+	os.makedirs("./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/" + function_dir + "/",
+	            exist_ok=True)
+
+	# Creates the pack.mcmeta file
 	pack_mcmeta = open("./datapacks/every-scoreboard-" + minecraft_version + "/pack.mcmeta", "w+")
 	if pack_major >= 82:  # 25w31a+ uses min_format/max_format instead of a single pack_format
 		# max_format uses a generous forward-compatible ceiling, same convention
@@ -139,7 +151,7 @@ def main():
 
 	# Writes to a file
 	create_mcfunction = open(
-		"./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/functions/create.mcfunction",
+		"./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/" + function_dir + "/create.mcfunction",
 		"w+")
 	create_mcfunction.write("\n".join(fin_create_commands))
 	create_mcfunction.close()
@@ -147,7 +159,7 @@ def main():
 
 	# Writes the remove commands
 	delete_mcfunction = open(
-		"./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/functions/delete.mcfunction",
+		"./datapacks/every-scoreboard-" + minecraft_version + "/data/every-scoreboard/" + function_dir + "/delete.mcfunction",
 		"w+")
 	delete_mcfunction.write("\n".join(fin_delete_commands))
 	delete_mcfunction.close()
